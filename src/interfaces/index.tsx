@@ -22,19 +22,19 @@ export interface User {
 export interface Author {
   id: number;
   fullName: string;
-  books: string[];
+  books: Book[];
 }
 
 export interface Genre {
   id: number;
   name: string;
-  books: string[];
+  books: Book[];
 }
 
 export interface Language {
   id: number;
   name: string;
-  books: string[];
+  books: Book[];
 }
 
 export interface Book {
