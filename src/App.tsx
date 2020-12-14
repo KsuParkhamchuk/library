@@ -10,7 +10,7 @@ import Authentification from './components/Authentification';
 import Home from './components/Home';
 import AdminPage from './components/AdminPage';
 import Creation from './components/Creation';
-import { Route, Switch} from 'react-router-dom'
+import { Route, Switch } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends React.Component<any, any> {
@@ -20,19 +20,19 @@ class App extends React.Component<any, any> {
       parentName: 'App'
     }
   }
- 
+
   render() {
     return (
-    <div>
-          <Switch>
-            <Route exact path='/' component={Home}/>
-            <Route path='/registration' component={Registration} />
-            <Route path='/home' component={Home} />
-            <Route  path='/personalPage' component={AdminPage} />
-            <Route  path='/create' component={Creation} />
-            <Route  path='/statistics' component={Catalog} />
-          </Switch>  
-    </div>
+      <div>
+        <Switch>
+          <Route exact path='/' component={Home} />
+          <Route path='/registration' component={Registration} />
+          <Route path='/home' component={Home} />
+          <Route path='/personalPage' component={AdminPage} />
+          <Route path='/create' component={Creation} />
+          <Route path='/statistics' component={Catalog} />
+        </Switch>
+      </div>
     )
   }
 }
