@@ -7,15 +7,12 @@ export namespace UserModel {
     }
 
     export interface Props {
-      saveUser: any
+        saveUser: any
     }
 }
 
 export class User {
-    firstName: string = '';
-    lastName: string = '';
+    fullName: string = '';
     login: string = '';
     password: string = '';
-
 }
-
