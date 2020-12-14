@@ -1,0 +1,63 @@
+.holder{
+    display: flex;
+}
+
+.dateImg{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    background-color: #F2F1FC; 
+}
+
+.dateImg__wrapper{
+    margin-top: 30px;
+    height: 550px;
+    width: 600px;
+    background-size: contain;
+    background-position: 50%;
+    background-repeat: no-repeat;
+}
+
+.dateImg__description {
+    padding: 50px;
+    text-align: justify;
+}
+
+.dateImg__description--title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.dateVideo__wrapper{
+    margin-top: 30px;
+}
+
+.dateVideo__wrapper iframe {
+    border: 0;
+}
+
+.calendar{
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: transparent;
+    border: 1px solid #bbbbbb;
+    border-radius: 7px;
+}
+
+.dateImg__description--text {
+    line-height: 1.7;
+}
+
+@media(max-width: 768px){
+    .holder{
+        display: block;
+    }
+    
+    .dateImg{
+        width: 100%;
+    }
+    
+}

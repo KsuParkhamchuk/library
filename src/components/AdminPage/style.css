@@ -1,0 +1,17 @@
+.adminPage__header--img img{
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+}
+
+.adminPage__header {
+    padding: 50px;
+    box-shadow: 0 0 10px #cccccc;
+}
+
+.AdminPage__navigation--link {
+    padding: 7px 20px;
+    margin: 0 30px;
+    color: #fff;
+    background-color: #E2DBDB;
+}

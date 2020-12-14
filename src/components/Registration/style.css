@@ -1,0 +1,36 @@
+#formRegistration {
+    width: 50%;
+    box-shadow: 0 0 10px #cccccc;
+    padding: 35px;
+    margin: 0 auto;
+    min-height: 60%;
+    background-color: #fff;
+    position: relative;
+}
+
+.registrationForm {
+    height: 100vh;
+    background-color: #DAD5C7;
+}
+
+.formRegistartion__label {
+    width: 200px;
+}
+
+.formRegistration__content {
+    width: 50%;
+    margin: 0 auto; 
+}
+
+.backToStartBtn {
+    position: absolute;
+    top: 5%;
+    left: 5%; 
+}
+
+.formRegistrationBtn {
+    border: 0;
+    padding: 5px 0;
+    background-color: brown;
+    color: #fff;
+}

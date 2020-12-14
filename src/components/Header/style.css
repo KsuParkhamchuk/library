@@ -1,0 +1,31 @@
+header {
+    box-shadow: 0 0 7px #dddddd;
+    display: flex;
+    align-items: center;
+}
+
+.nasaLogo img{
+    width: 60px;
+    height: 60px;
+    margin: 0 20px;
+}
+
+.header__navigation {
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.header__navigation--link {
+    margin-right: 20px;
+    text-decoration: none;
+    color:#130505;
+    font-weight: bold;
+}
+
+.header__navigation--link:hover {
+    color: #301f21;
+    border-bottom: 1px solid #301f21;
+    text-decoration: none;
+}

@@ -1,0 +1,8 @@
+.auth__content {
+    width: 80%;
+}
+
+.authentification {
+    height: 100vh;
+    display: flex;
+}
