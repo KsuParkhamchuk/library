@@ -76,11 +76,28 @@ const updateToken = () => {
   }
 }
 
-export const getSelectedDateImg = (selectedDate: string) => {
+export const loadFilterData = (dataType: string) => {
+  console.log('2');
+  return async (dispatch: any) => {
+    const res = await fetch(`/api/v1/${dataType}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json"
+      },
+    });
+    console.log(res);
+    if (res.status === 201) {
+      const response: User = await res.json();
+      console.log(response);
+    }
+  }
+}
+
+export const getSelectedDateImg = (imgDate: string) => {
   return (dispatch: (action: any) => Promise<any>, getState: () => IRootState) => {
     return dispatch({
-      type: 'GET_SELECTED_DATE_IMG',
-      callAPI: 'https://api.nasa.gov/planetary/apod?api_key=s0Bgn85OLjsXTfgCmhRgAAiu5fjVJrh2KJ5lqeZ7&date=' + selectedDate
+      type: 'GET_ALL_MONTH_IMG',
+      callAPI: 'https://api.nasa.gov/planetary/apod?api_key=s0Bgn85OLjsXTfgCmhRgAAiu5fjVJrh2KJ5lqeZ7&date=' + imgDate,
     })
   }
 }

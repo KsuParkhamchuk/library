@@ -2,9 +2,7 @@ import React from 'react';
 
 import './App.css';
 import Header from './components/Header';
-import CurrentImg from './components/CurrentImg'
-import Catalog from './components/Catalog'
-import WelcomePage from './components/WelcomePage'
+import Statistics from './components/Statistics';
 import Registration from './components/Registration';
 import Authentification from './components/Authentification';
 import Home from './components/Home';
@@ -30,7 +28,7 @@ class App extends React.Component<any, any> {
           <Route path='/home' component={Home} />
           <Route path='/personalPage' component={AdminPage} />
           <Route path='/create' component={Creation} />
-          <Route path='/statistics' component={Catalog} />
+          <Route path='/statistics' component={Statistics} />
         </Switch>
       </div>
     )
