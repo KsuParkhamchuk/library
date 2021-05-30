@@ -3,11 +3,14 @@ import books from "../../img/books.png";
 import "./style.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { UserModel } from "./models";
 import { connect } from "react-redux";
-import {loginUser} from '../../actions';
-import history from '../../history';
+import { loginUser } from '../../actions';
+import createBrowserHistory from 'history/createBrowserHistory';
+
+const history = createBrowserHistory({forceRefresh:true});
+
 
 class Authentification extends React.Component<
   UserModel.Props,
@@ -21,8 +24,11 @@ class Authentification extends React.Component<
         password: "",
       },
       errors: [],
+      isAuthorized: 'false'
     };
   }
+
+  
 
   fieldChange = (e: any, fieldName: string) => {
     this.setState({
@@ -41,25 +47,45 @@ class Authentification extends React.Component<
   userLogin = () => {
     this.setState({ errors: [] });
     const { User, errors } = this.state;
-      if(this.checkEmptyFields()){
-        this.props.loginUser(this.state.User);
-        history.push('/home');
-      }
-      else {
+    console.log(User);
+    if (this.checkEmptyFields()) {
+      return fetch(`http://localhost:8080/api/v1/auth/login`, {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(User)
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
           this.setState({
-              errors: [...errors, "Заполните все поля!"]
+            isAuthorized: 'true'
           })
-      }
+          localStorage.setItem("access_token", res.accessToken);
+          localStorage.setItem("fullName", res.user.fullName);
+          localStorage.setItem("user_id", res.user.id);
+          localStorage.setItem("user_role", res.user.role);
+          localStorage.setItem("isAuth", this.state.isAuthorized);
+          history.push('/home');
+        });
+    }
+    else {
+      this.setState({
+        errors: [...errors, "Заполните все поля!"]
+      })
+    }
   }
 
   render() {
     return (
       <div className="authentification">
         <div className="auth__content row justify-content-center align-items-center m-auto">
-          <div className="col-5">
+          <div className="col-6">
             <img src={books} alt="" />
           </div>
-          <div className="col-5">
+          <div className="col-6">
             <div className="auth__content--form p-4">
               <h2 className="text-center mb-5">ВХОД В БИБЛИОТЕКУ</h2>
               <form
@@ -69,7 +95,7 @@ class Authentification extends React.Component<
               >
                 <TextField
                   id="filled-basic"
-                  label="Login"
+                  label="Логин"
                   variant="filled"
                   className="mb-5"
                   value={this.state.User.login}
@@ -78,7 +104,7 @@ class Authentification extends React.Component<
 
                 <TextField
                   id="filled-basic"
-                  label="Password"
+                  label="Пароль"
                   variant="filled"
                   className="mb-5"
                   value={this.state.User.password}
@@ -95,7 +121,7 @@ class Authentification extends React.Component<
                 <Button variant="contained" size="medium" color="primary" onClick={this.userLogin}>
                   Войти
                 </Button>
-               
+
                 <span>
                   Еще нет аккаунта? Для создания кликните
                   <Link to="/registration" className="header__navigation--link">
@@ -111,7 +137,7 @@ class Authentification extends React.Component<
   }
 }
 
-const mapDispatchToProps = (dispatch:any) => ({
-    loginUser: (User:any) => dispatch(loginUser(User))
-  })
+const mapDispatchToProps = (dispatch: any) => ({
+  loginUser: (User: any) => dispatch(loginUser(User))
+})
 export default connect(null, mapDispatchToProps)(Authentification);

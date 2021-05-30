@@ -1,0 +1,15 @@
+.home__filter {
+    width: 30%;
+    background-color: #6b655c;
+    height: 54vh;
+}
+
+.home__activeContent {
+    padding: 20px 30px;
+    width:70%;
+}
+
+.filterBtn button {
+    background-color: #d4d2ad;
+    color: black;
+}

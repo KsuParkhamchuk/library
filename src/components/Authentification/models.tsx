@@ -1,7 +1,8 @@
 export namespace UserModel {
     export interface State {
         User: User,
-        errors: Array<String>
+        errors: Array<String>,
+        isAuthorized: string
     }
 
     export interface Props {

@@ -1,13 +1,15 @@
 import React from "react";
 import "./style.css";
-import { User, UserModel } from "./models";
+import { UserModel } from "./models";
 import { connect } from "react-redux";
 import * as actions from "../../actions";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { registerNewUser } from '../../actions';
-import { UserRegistration } from "../../interfaces";
+import {registerNewUser} from '../../actions';
+import createBrowserHistory from 'history/createBrowserHistory';
+
+const history = createBrowserHistory({forceRefresh:true});
 
 class Registration extends React.Component<UserModel.Props, UserModel.State> {
   constructor(props: any) {
@@ -17,10 +19,14 @@ class Registration extends React.Component<UserModel.Props, UserModel.State> {
         fullName: "",
         login: "",
         password: "",
+        role: 'USER'
       },
       passwordConfirmation: "",
       sessionToken: "",
       errors: [],
+      isRegistrationOk: false,
+      isAuthorized: 'false',
+      firstTime: ''
     };
   }
 
@@ -40,47 +46,54 @@ class Registration extends React.Component<UserModel.Props, UserModel.State> {
   };
 
   comparePasswords = () => {
-    return this.state.newUser.password === this.state.passwordConfirmation;
+    return this.state.newUser.password == this.state.passwordConfirmation;
   };
 
   checkEmptyFields = () => {
     if (
-      this.state.newUser.login !== '' &&
-      this.state.newUser.fullName !== ''
-    ) {
+      this.state.newUser.login !== "" &&
+      this.state.newUser.fullName !== "")
       return true;
-    }
   };
 
-  protectedAPI = () => {
-    fetch('http://localhost:8080/api/v1/protected/greeting', {
-      method: "GET",
-      headers: {
-        "authorization": "bearer " + localStorage.getItem("access_token")
-      }
-    })
-      .then((res) => res.json())
-      .then((res) => console.log(res))
-  }
+ 
 
   userSignUp = (e: any) => {
     this.setState({ errors: [] });
     const { newUser, passwordConfirmation, errors } = this.state;
-
-    if (!this.comparePasswords()) {
+    if (this.comparePasswords()) {
+      if (this.checkEmptyFields()) {
+        return fetch(`http://localhost:8080/api/v1/users`, {
+          method: "POST",
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(this.state.newUser)
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            console.log(res);
+            this.setState({
+              isAuthorized: 'true'
+            })
+            localStorage.setItem("access_token", res.accessToken);
+            localStorage.setItem("fullName", res.fullName);
+            localStorage.setItem("user_id", res.id);
+            localStorage.setItem("user_role", res.role);
+            localStorage.setItem("isAuth", this.state.isAuthorized);
+            localStorage.setItem("first", this.state.firstTime);
+            history.push('/home');
+          });
+      } else {
+        this.setState({
+          errors: [...errors, "Все поля обязательны для заполнения"],
+        });
+      }
+    } else {
       this.setState({
         errors: [...errors, "Пароли не совпадают"],
       });
-    }
-
-    if (!this.checkEmptyFields()) {
-      this.setState({
-        errors: [...errors, "Все поля обязательны для заполнения"],
-      });
-    }
-
-    if (!errors.length) {
-      this.props.saveUser(this.state.newUser);
     }
   };
 
@@ -89,34 +102,35 @@ class Registration extends React.Component<UserModel.Props, UserModel.State> {
       <div className="registrationForm d-flex justify-content-center align-items-center">
         <form id="formRegistration" action="">
           <div className="formRegistration__content">
-            <Link to="/" className="backToStartBtn">
-              Назад
+              <Link to="/" className="backToStartBtn">
+                Назад
               </Link>
-            <h2 className="text-center mb-4">Регистрация</h2>
+            <h2 className="text-center mb-4">Registration</h2>
 
             <TextField
               id="standard-basic"
-              label="Фамилия и имя"
+              label="Name"
               className="formRegistartion__input mb-3 w-100"
               onChange={(e) => this.fieldChange(e, "fullName")}
               value={this.state.newUser.fullName}
               type="text"
-              helperText="*Поле обязательно для заполнения."
+              helperText="*Required."
             />
             <br />
+            
             <TextField
               id="standard-basic"
-              label="Логин"
+              label="Login"
               className="formRegistartion__input mb-3 w-100"
               onChange={(e) => this.fieldChange(e, "login")}
               value={this.state.newUser.login}
               type="text"
-              helperText="*Поле обязательно для заполнения."
+              helperText="*Required."
             />
             <br />
             <TextField
               id="standard-basic"
-              label="Пароль"
+              label="Password"
               className="formRegistartion__input mb-3 w-100"
               onChange={(e) => this.fieldChange(e, "password")}
               value={this.state.newUser.password}
@@ -126,12 +140,12 @@ class Registration extends React.Component<UserModel.Props, UserModel.State> {
             <br />
             <TextField
               id="standard-basic"
-              label="Подтвердите пароль"
+              label="Confirm password"
               className="formRegistartion__input mb-3 w-100"
               onChange={this.userPasswordConfirmationOnChange}
               value={this.state.passwordConfirmation}
               type="password"
-              helperText="*Поле обязательно для заполнения."
+              helperText="*Required."
             />
             <br />
             <div className="text-danger">
@@ -147,15 +161,9 @@ class Registration extends React.Component<UserModel.Props, UserModel.State> {
                 onClick={this.userSignUp}
                 type="button"
               >
-                Sign up
+                Зарегистрироваться
               </button>
-              <button
-                className="formRegistrationBtn w-100 my-3"
-                onClick={this.protectedAPI}
-                type="button"
-              >
-                Запрос
-              </button>
+             
             </div>
           </div>
         </form>
@@ -164,7 +172,7 @@ class Registration extends React.Component<UserModel.Props, UserModel.State> {
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  saveUser: (newUser: UserRegistration) => dispatch(registerNewUser(newUser))
+const mapDispatchToProps = (dispatch:any) => ({
+  saveUser: (newUser:any) => dispatch(registerNewUser(newUser))
 })
 export default connect(null, mapDispatchToProps)(Registration);

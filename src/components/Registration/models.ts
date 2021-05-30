@@ -3,7 +3,10 @@ export namespace UserModel {
         newUser: User,
         passwordConfirmation: string,
         sessionToken: string,
-        errors: Array<String>
+        errors: Array<String>,
+        isRegistrationOk: boolean,
+        isAuthorized: string,
+        firstTime: string,
     }
 
     export interface Props {
@@ -15,4 +18,5 @@ export class User {
     fullName: string = '';
     login: string = '';
     password: string = '';
+    role: string = ''
 }

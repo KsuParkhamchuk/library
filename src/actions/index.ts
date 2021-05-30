@@ -1,16 +1,28 @@
 import { ROLE } from "../constants";
 import { User, UserRegistration } from "../interfaces";
-import { IRootState } from "../reducers"
-
+import { IRootState } from "../reducers";
+import axios from "axios";
+import { debug } from "console";
 const headerAuth = 'Basic aGVzZmludGVjaDo1ZThmMTAxOC1mNjVhLTRlMjAtYWU2OS0xZjE4MTJmNmY2Zjc=';
 const baseUrl = 'http://localhost:8080/api/v1';
+
+
+// export function loadAuthors() {
+//   return(dispatch:any) => {
+//     return axios.get(`${baseUrl}/api/v1/authors`)
+//     .then((response) => {
+//       dispatch(getAuthors(response.data))
+//     })
+//   }
+// }
 
 export const registerNewUser = (newUser: UserRegistration) => {
   return async (dispatch: any) => {
     const res = await fetch(`${baseUrl}/users`, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Accept': 'application/json'
       },
       body: JSON.stringify({
         ...newUser,
@@ -31,20 +43,22 @@ const registerUser = (tokens: any) => ({
 })
 
 export const loginUser = (user: any) => {
+
   return (dispatch: any) => {
-    return fetch(`http://192.168.100.18:8080/api/v1/oauth/token?grant_type=password&scope=global&username=${user.login}&password=${user.password}`, {
+    return fetch(`${baseUrl}/auth/login`, {
       method: "POST",
       headers: {
-        "authorization": headerAuth
+        'Content-Type': 'application/json;charset=utf-8',
+        'Accept': 'application/json'
       },
+      body: JSON.stringify(user)
     })
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        localStorage.setItem("access_token", res.access_token);
-        localStorage.setItem("refresh_token", res.refresh_token);
-        localStorage.setItem("token_start_time", String(new Date()));
-        localStorage.setItem("token_expires_time", res.expires_in);
+        localStorage.setItem("access_token", res.accessToken);
+        localStorage.setItem("fullName", res.user.fullName);
+        localStorage.setItem("user_id", res.user.id);
         dispatch(registerUser(res));
       });
   }
@@ -93,6 +107,18 @@ export const loadFilterData = (dataType: string) => {
   }
 }
 
+
+// Handle HTTP errors since fetch won't.
+function handleErrors(response:any) {
+  if (!response.ok) {
+    throw Error(response.statusText);
+  }
+  return response;
+}
+
+
+
+
 export const getSelectedDateImg = (imgDate: string) => {
   return (dispatch: (action: any) => Promise<any>, getState: () => IRootState) => {
     return dispatch({
@@ -111,10 +137,7 @@ export const getImgs = (imgDate: string) => {
   }
 }
 
-export const clearImgArray = () => ({
-  type: 'CLEAR_ARRAY',
-  payload: []
-})
+
 
 
 

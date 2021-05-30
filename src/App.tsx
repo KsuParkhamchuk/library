@@ -2,6 +2,7 @@ import React from 'react';
 
 import './App.css';
 import Header from './components/Header';
+import BookPage from './components/Home/DefaultScreen/BookPage'
 import Statistics from './components/Statistics';
 import Registration from './components/Registration';
 import Authentification from './components/Authentification';
@@ -23,12 +24,13 @@ class App extends React.Component<any, any> {
     return (
       <div>
         <Switch>
-          <Route exact path='/' component={Home} />
+          <Route exact path='/' component={Authentification} />
           <Route path='/registration' component={Registration} />
           <Route path='/home' component={Home} />
           <Route path='/personalPage' component={AdminPage} />
           <Route path='/create' component={Creation} />
           <Route path='/statistics' component={Statistics} />
+          <Route path='/book/:id' component={BookPage} />
         </Switch>
       </div>
     )

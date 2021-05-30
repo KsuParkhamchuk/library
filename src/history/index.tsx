@@ -1,8 +1,7 @@
-import createHistory from 'history/createHashHistory'
+import {createBrowserHistory} from 'history';
 
-const history = createHistory({
+const history = createBrowserHistory({
   basename: '', // portal#/home
-  hashType: 'slash' // is #/home
 })
 
 export default history

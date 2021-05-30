@@ -210,7 +210,7 @@ const mapStateToProps = (state: IRootState) => ({
 
 const mapDispatchToProps = {
   getImgs: actions.getImgs,
-  clearArray: actions.clearImgArray,
+  // clearArray: actions.clearImgArray,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Catalog);

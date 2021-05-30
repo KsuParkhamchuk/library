@@ -1,12 +1,15 @@
 export namespace HomeModel {
     export interface State {
-        genres: string[],
-        authors: string[],
-        languages: string[]
-     
+        genres: Array<any>,
+        authors: Array<any>,
+        languages: Array<any>,
+        modalOpen: boolean
+        checkedAuthors: Array<Number>,
+        checkedGenres: Array<Number>,
+        checkedLanguages: Array<Number>
     }
 
     export interface Props {
-        loadFilterData: any
+        
     }
 }

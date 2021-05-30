@@ -3,11 +3,11 @@ import user from '././user'
 import { combineReducers } from 'redux'
 
 export interface IRootState {
-    user: any,
+    user: any
 }
 
 const rootReducer = combineReducers<IRootState>({
-    user,
+    user
 })
 
 export default rootReducer
